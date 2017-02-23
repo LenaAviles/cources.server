@@ -14,7 +14,7 @@ import java.io.InputStream;
 import java.util.Map;
 
 /**
- * @author Aviles
+ * @author Arthas
  */
 public class JacksonDataMapper implements DataMapper {
 	private static final String CPJ = "Can't parse json";
@@ -35,7 +35,7 @@ public class JacksonDataMapper implements DataMapper {
 	}
 
 	@Override
-	public Map convertToMap(final Object value) {
+	public Map<String, Object> convertToMap(final Object value) {
 		try {
 			return (Map<String, Object>) mapper.convertValue(value, Map.class);
 		} catch (Exception ex) {
@@ -53,9 +53,9 @@ public class JacksonDataMapper implements DataMapper {
 	}
 
 	@Override
-	public Object convert(Map<String, Object> map, Object dataType) {
+	public <T> T convert(Map<String, Object> map, TypeReference<?> dataType) {
 		try {
-			return mapper.convertValue((Object) map, (TypeReference<?>) dataType);
+			return mapper.convertValue(map, dataType);
 		} catch (Exception ex) {
 			throw new MapperException("Can't convert map ", ex);
 		}
@@ -71,7 +71,7 @@ public class JacksonDataMapper implements DataMapper {
 	}
 
 	@Override
-	public <T> T mapData(String data, TypeReference<T> dataType) {
+	public <T> T mapData(String data, TypeReference<?> dataType) {
 		try {
 			return mapper.readValue(data, dataType);
 		} catch (Exception ex) {
@@ -98,7 +98,7 @@ public class JacksonDataMapper implements DataMapper {
 	}
 
 	@Override
-	public String dataToString(Object data) {
+	public <T> String dataToString(T data) {
 		try {
 			return new String(mapper.writeValueAsBytes(data), "UTF-8");
 		} catch (Exception ex) {
@@ -107,7 +107,7 @@ public class JacksonDataMapper implements DataMapper {
 	}
 
 	@Override
-	public String objectToString(ObjectMapper data) {
+	public String objectToString(Object data) {
 		try {
 			return mapper.writeValueAsString(data);
 		} catch (Exception e) {

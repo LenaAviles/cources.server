@@ -6,7 +6,6 @@
     <parent>
         <groupId>com.softgroup</groupId>
         <artifactId>basis</artifactId>
-
         <version>0.0.1</version>
     </parent>
 
